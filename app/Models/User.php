@@ -49,4 +49,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chirp::class);
     }
+    /** 
+     *         @return \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+    */
+    public function followers(){
+        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'followers_id')->withTimestamps();
+    }
+
+    /** 
+     *         @return \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+    */
+    public function following(){
+        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'followers_id')->withTimestamps();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isFollowing(User $user){
+        return $this->followings->contains($user);
+    }
 }
