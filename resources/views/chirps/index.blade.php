@@ -26,7 +26,6 @@
                                     <small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                                 @endunless
                             </div>
-                            @if ($chirp->user->is(auth()->user()))
                                 <x-dropdown>
                                     <x-slot name="trigger">
                                         <button>
@@ -36,6 +35,7 @@
                                         </button>
                                     </x-slot>
                                     <x-slot name="content">
+                                    @if ($chirp->user->is(auth()->user()))
                                         <x-dropdown-link :href="route('chirps.edit', $chirp)">
                                             {{ __('Edit') }}
                                         </x-dropdown-link>
@@ -46,14 +46,31 @@
                                                 {{ __('Delete') }}
                                             </x-dropdown-link>
                                         </form>
+                                    @else
+                                        @if (!auth()->user()->following->contains($chirps->user))
+                                        <form method="POST" action="{{ route('profile.follow', $chirp->user) }}">
+                                            @csrf
+                                            <x-dropdown-link :href="route('profile.follow', $chirp->user)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                {{ __('Follow') }}
+                                            </x-dropdown-link>
+                                        </form>
+                                        @else
+                                        <form method="POST" action="{{ route('profile.unfollow', $chirp->user) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <x-dropdown-link :href="route('profile.unfollow', $chirp)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                {{ __('UnFollow') }}
+                                            </x-dropdown-link>
+                                        </form>
+                                        @endif
+                                    @endif
                                     </x-slot>
                                 </x-dropdown>
-                            @endif
+                            </div>
+                            <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                         </div>
-                        <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-    </div>
 </x-app-layout>
