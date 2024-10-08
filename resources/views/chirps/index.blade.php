@@ -47,7 +47,7 @@
                                             </x-dropdown-link>
                                         </form>
                                     @else
-                                        @if (!auth()->user()->following->contains($chirps->user))
+                                        @if (!auth()->user()->followings->contains($chirp->user))
                                         <form method="POST" action="{{ route('profile.follow', $chirp->user) }}">
                                             @csrf
                                             <x-dropdown-link :href="route('profile.follow', $chirp->user)" onclick="event.preventDefault(); this.closest('form').submit();">

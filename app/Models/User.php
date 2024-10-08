@@ -53,14 +53,14 @@ class User extends Authenticatable
      *         @return \Illuminate\Database\Eloquent\Relations\BelongsToMany;
     */
     public function followers(){
-        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'followers_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'follower_id')->withTimestamps();
     }
 
     /** 
      *         @return \Illuminate\Database\Eloquent\Relations\BelongsToMany;
     */
-    public function following(){
-        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'followers_id')->withTimestamps();
+    public function followings(){
+        return $this->belongsToMany(User::class, 'followers', 'leader_id', 'follower_id')->withTimestamps();
     }
 
     /**
